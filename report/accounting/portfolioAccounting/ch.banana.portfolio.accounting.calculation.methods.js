@@ -27,6 +27,15 @@ function getPlusMinusSign() {
     return PLUSMINUS_SIGN;
 }
 
+function getUnitPriceRoundingContext(docInfo) {
+    
+    if (!docInfo)
+        return { 'decimals': "2", 'mode': Banana.SDecimal.HALF_UP };
+
+        let unitPriceDecimals = docInfo.unitPriceColDecimals;
+        return { 'decimals': unitPriceDecimals, 'mode': Banana.SDecimal.HALF_UP };
+    }
+
 function initJsonDoc() {
     var jsonDoc = {};
     jsonDoc.document = {};
@@ -159,9 +168,15 @@ function getDocumentInfo(banDoc) {
 }
 
 /**
- * Reads the journal data and returns an object containing the opening values of the item, if present.
- */
-function getItemOpeningValuesFromJournal(docInfo, journal, itemId) {
+ * Reads the journal data and returns an object containing the item's opening values, if available.
+* As with normal transactions, the value is read from "JAmountTransactionCurrency".
+* For compatibility with the journal logic, item opening values are stored in the
+* journal using the account currency, since the item currency cannot be stored there directly.
+* The corresponding value in the item currency is therefore stored in
+* "JAmountTransactionCurrency".
+  */
+
+function getItemOpeningValuesFromJournal(banDoc, docInfo, journal, itemId, itemCurrency) {
 
     var openingValues = {};
 
@@ -172,24 +187,33 @@ function getItemOpeningValuesFromJournal(docInfo, journal, itemId) {
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
         if (tRow.value("JOperationType") === "1" && tRow.value("ItemsId") === itemId) {
+
             openingValues.qt = tRow.value("Quantity");
             openingValues.unitPrice = tRow.value("UnitPrice");
             openingValues.date = tRow.value("JDate");
             openingValues.description = tRow.value("JDescription");
+
+            // Base Currency amounts
             openingValues.amount = tRow.value("JAmount");
-            openingValues.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-            openingValues.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+            openingValues.debitBase = tRow.value("JDebitAmount");
+            openingValues.creditBase = tRow.value("JCreditAmount");
+            let isDebitRow = tRow.value("JDebitAmount") !== "";
+
             if (docInfo.isMultiCurrency) {
-                openingValues.amountCurr = tRow.value("JAmountAccountCurrency");
-                openingValues.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
-                openingValues.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
+                // Transaction currency
+                let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
+                openingValues.debitItemCurr = isDebitRow ? transCurrAmount : "";
+                openingValues.creditItemCurr = !isDebitRow ? transCurrAmount : "";
+                openingValues.amountItemCurr = transCurrAmount;
+                openingValues.transactionCurrency = itemCurrency;
+                openingValues.multiplier = findFirstOccurencyMultiplierForCurr(banDoc, itemCurrency);
             }
+
             break;
         }
     }
 
     return openingValues;
-
 }
 
 function getFormattedSavedParams(banDoc, paramsId) {
@@ -475,12 +499,39 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
             trData.description = tRow.value("Description");
             trData.qt = tRow.value("Quantity");
             trData.unitPrice = tRow.value("UnitPrice");
-            trData.debitBase = tRow.value("JDebitAmount"); // Debit value in base currency
-            trData.creditBase = tRow.value("JCreditAmount"); // Credit value base currency
+
+            // Importi in moneta base (come prima)
+            trData.debitBase = tRow.value("JDebitAmount");
+            trData.creditBase = tRow.value("JCreditAmount");
+            let isDebitRow = tRow.value("JDebitAmount") !== "";
+
             if (docInfo.isMultiCurrency) {
-                trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
-                trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
-                trData.currency = tRow.value("ExchangeCurrency");
+                /** We use the currency amount following the transaction currency.
+                 * Using this value, we are able to manage Asset accounts in base
+                 * currency with multiple currencies securities because we can calculate
+                 * the progressive value for the reports using always the security currency amouunt
+                 * and not the amount in the account currency, which could be different in that case.
+                 */
+                let transCurrency = tRow.value("JTransactionCurrency");
+                trData.currency = transCurrency;
+
+                /**
+                * We only get the amount if the transaction currency is the same as the item currency.
+                * This check allows us to ignore amounts from entries that only modify the Asset
+                * account's base currency value, in particular exchange rate adjustments. By ignoring
+                * these values, we avoid the balance calculated in the item's currency being "distorted",
+                * because although these values are saved as "JAmountTransactionCurrency", they are not
+                * actually in the item's currency but in the account's currency.
+                 */
+                if (itemCurrency == transCurrency){
+                    let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
+                    trData.debitItemCurr = isDebitRow ? transCurrAmount : "";
+                    trData.creditItemCurr = !isDebitRow ? transCurrAmount : "";
+                } else {
+                    trData.debitItemCurr = "";
+                    trData.creditItemCurr = "";
+                }
+
                 let multiplier = "";
                 /**
                 * In some operations such as:
@@ -497,7 +548,7 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                 * exchange rate that refers to the item currency, as the multiplier must be always of the
                 * same type for each exchange row.
                  */
-                if (itemCurrency != docInfo.baseCurrency) { // We are sure item has ALWAYS the same currency as the account used.
+                if (itemCurrency != docInfo.baseCurrency) {
                     multiplier = tRow.value("ExchangeMultiplier") != "" ?
                         tRow.value("ExchangeMultiplier") : getCurrentRowObjValue(banDoc, currentRowNr, "Transactions", "ExchangeMultiplier");
                     if (!multiplier) {
@@ -506,6 +557,7 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                 }
                 trData.multiplier = multiplier;
             }
+
             transactions.push(trData);
         }
     }
@@ -563,7 +615,7 @@ function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, cur
     // Get the Journal list
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NORMAL);
     // From the journal we get an object containing the opening values of the item (operations type = 1).
-    let itemOpeningValues = getItemOpeningValuesFromJournal(docInfo, journal, itemObj.item);
+    let itemOpeningValues = getItemOpeningValuesFromJournal(banDoc, docInfo, journal, itemObj.item, itemObj.currency);
     // From the account card we get the transactions related to the item (operations type = 3).
     let accountCardData = getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr);
     // Create the item card data object.
@@ -597,7 +649,7 @@ function setItemCard_ProgressiveValues(docInfo, itemTransactions, itemOpeningVal
     // Opening values
     let runningQty = Dec.to(ov.qt);
     let runningBalanceBase = Dec.to(ov.amount);
-    let runningBalanceCurr = isMultiCurrency ? Dec.to(ov.amountCurr) : "0";
+    let runningBalanceCurr = isMultiCurrency ? Dec.to(ov.amountItemCurr) : "0";
 
     for (let i = 0; i < itemTransactions.length; i++) {
         const tx = itemTransactions[i];
@@ -620,10 +672,10 @@ function setItemCard_ProgressiveValues(docInfo, itemTransactions, itemOpeningVal
 
         // Balance progressive in account currency (if multi-currency)
         if (isMultiCurrency) {
-            const rowDeltaCurr = Dec.sub(tx.debitCurr, tx.creditCurr);
+            const rowDeltaCurr = Dec.sub(tx.debitItemCurr, tx.creditItemCurr);
             runningBalanceCurr = Dec.add(runningBalanceCurr, rowDeltaCurr);
-            tx.amountCurr = rowDeltaCurr;       // per-row delta
-            tx.balanceCurr = runningBalanceCurr; // running balance
+            tx.amountItemCurr = rowDeltaCurr;
+            tx.balanceCurr = runningBalanceCurr;
         }
 
         // --- Average accounting cost (weighted moving average) ---
@@ -683,7 +735,8 @@ function setOpeningValues(currentValuesObj, openingData) {
     currentValuesObj.itemAvgCost = openingData.unitPrice;
     currentValuesObj.itemQtBalance = openingData.qt;
     currentValuesObj.itemBalanceBase = openingData.amount;
-    currentValuesObj.itemBalanceCurr = openingData.amountCurr;
+    currentValuesObj.itemBalanceCurr = openingData.amountItemCurr;
+    currentValuesObj.itemOpMultiplier = openingData.multiplier;
     currentValuesObj.itemExchangeRate = "";
 }
 
@@ -1444,7 +1497,7 @@ function addItemOpeningTableRowMultiCurrency(tableRow, itemOpeningData, decimals
     tableRow.addCell("", "", 1);
     tableRow.addCell(itemOpeningData.description, '');
     tableRow.addCell("", "", 4);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amountCurr, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amountItemCurr, 2, true), styleNormalAmount);
     tableRow.addCell(formatQty(itemOpeningData.qt), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
     tableRow.addCell("", "", 2);
@@ -1463,15 +1516,14 @@ function addItemTransactionTableRow(tableRow, itCardRow, decimals, styleNormalAm
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);
 }
-
 function addItemTransactionTableRowMultiCurrency(tableRow, itCardRow, decimals, styleNormalAmount) {
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
     tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
     tableRow.addCell(itCardRow.description, '');
     tableRow.addCell(formatQty(itCardRow.qt), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr, 2, false), styleNormalAmount);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitItemCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditItemCurr, 2, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr, 2, true), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);

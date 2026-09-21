@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/P/Universal Images/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.calc.sales.data.dialog.test.js}
+%%SCRIPT{C:/P/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.calc.sales.data.dialog.test.js}
 %
 \begin{testcase}{TestCalcSalesDialog}
 \begin{test}{testRecordSalesTransactions}
@@ -1089,6 +1089,340 @@
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "17"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 10: Sell part of Planet}
+\subsection{Test 10: Calculated Data}
+\begin{jsonvalue}{Test 10}
+{
+    "accruedInterests": "",
+    "avgCost": "10.9091",
+    "avgSharesValue": "654.5460",
+    "currentQt": "110.0000",
+    "exRateResult": "-3.109093500",
+    "saleResult": "65.4540",
+    "totalSharesvalue": "720.00"
+}
+\end{jsonvalue}
+\subsection{Test 10: Recorded Data}
+\begin{jsonvalue}{Test 10}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "INV-Interest & Expenses",
+                                                "AmountCurrency": "5.00",
+                                                "Date": "2026-03-20",
+                                                "Description": "Planet Bank charges",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "0.930000",
+                                                "ExternalReference": "inv_sale_1.1",
+                                                "ItemsId": "Planet"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "21"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "715.00",
+                                                "Date": "2026-03-20",
+                                                "Description": "Planet Cashed Net",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "0.930000",
+                                                "ExternalReference": "inv_sale_1.3",
+                                                "ItemsId": "Planet"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "22"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Result",
+                                                "AccountDebit": "Private Equity",
+                                                "AmountCurrency": "65.4540",
+                                                "Date": "2026-03-20",
+                                                "Description": "Planet Result on sale",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "0.930000",
+                                                "ExternalReference": "inv_sale_1.4",
+                                                "ItemsId": "Planet",
+                                                "Quantity": "±60.0000",
+                                                "UnitPrice": "1.0909"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "23"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Private Equity",
+                                                "AccountDebit": "INV-Result",
+                                                "Amount": "3.109093500",
+                                                "Date": "2026-03-20",
+                                                "Description": "Planet Result on exchange",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_1.5",
+                                                "ItemsId": "Planet"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "24"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 11: Sell part of CHxxxxxxxxx}
+\subsection{Test 11: Calculated Data}
+\begin{jsonvalue}{Test 11}
+{
+    "accruedInterests": "",
+    "avgCost": "100.0000",
+    "avgSharesValue": "3000.0000",
+    "currentQt": "85.0000",
+    "exRateResult": "0",
+    "saleResult": "60.0000",
+    "totalSharesvalue": "3060.0000"
+}
+\end{jsonvalue}
+\subsection{Test 11: Recorded Data}
+\begin{jsonvalue}{Test 11}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "INV-Interest & Expenses",
+                                                "AmountCurrency": "5.00",
+                                                "Date": "2026-03-20",
+                                                "Description": "Swiss Global Services SA Bank charges",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.1",
+                                                "ItemsId": "CHxxxxxxxxx"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "28"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "3055.0000",
+                                                "Date": "2026-03-20",
+                                                "Description": "Swiss Global Services SA Cashed Net",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.3",
+                                                "ItemsId": "CHxxxxxxxxx"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "26"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Result",
+                                                "AccountDebit": "Private Equity",
+                                                "AmountCurrency": "60.0000",
+                                                "Date": "2026-03-20",
+                                                "Description": "Swiss Global Services SA Result on sale",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.4",
+                                                "ItemsId": "CHxxxxxxxxx",
+                                                "Quantity": "±30.0000",
+                                                "UnitPrice": "2.0000"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "29"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 12: Sell part of XX}
+\subsection{Test 12: Calculated Data}
+\begin{jsonvalue}{Test 12}
+{
+    "accruedInterests": "",
+    "avgCost": "19.8636",
+    "avgSharesValue": "993.1800",
+    "currentQt": "110.0000",
+    "exRateResult": "-5.29999029748283752860411899313500",
+    "saleResult": "-18.1800",
+    "totalSharesvalue": "975.0000"
+}
+\end{jsonvalue}
+\subsection{Test 12: Recorded Data}
+\begin{jsonvalue}{Test 12}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "INV-Interest & Expenses",
+                                                "AmountCurrency": "7.00",
+                                                "Date": "2026-03-22",
+                                                "Description": "XX Props S.A. 2024/26 Bank charges",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.80000",
+                                                "ExternalReference": "inv_sale_4.1",
+                                                "ItemsId": "XX"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "33"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "968.0000",
+                                                "Date": "2026-03-22",
+                                                "Description": "XX Props S.A. 2024/26 Cashed Net",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.80000",
+                                                "ExternalReference": "inv_sale_4.3",
+                                                "ItemsId": "XX"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "34"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "UBS Securities USD",
+                                                "AccountDebit": "INV-Result",
+                                                "AmountCurrency": "-18.1800",
+                                                "Date": "2026-03-22",
+                                                "Description": "XX Props S.A. 2024/26 Result on sale",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.80000",
+                                                "ExternalReference": "inv_sale_4.4",
+                                                "ItemsId": "XX",
+                                                "Quantity": "±50.0000",
+                                                "UnitPrice": "-0.3636"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "35"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "UBS Securities USD",
+                                                "AccountDebit": "INV-Result",
+                                                "Amount": "5.29999029748283752860411899313500",
+                                                "Date": "2026-03-22",
+                                                "Description": "XX Props S.A. 2024/26 Result on exchange",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_4.5",
+                                                "ItemsId": "XX"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "36"
                                             }
                                         }
                                     ]
