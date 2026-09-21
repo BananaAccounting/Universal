@@ -93,7 +93,7 @@
             "securitiesData": [
                 {
                     "securityBalance": "",
-                    "securityBalanceCurrency": "",
+                    "securityBalanceCurrency": "0",
                     "securityId": "IT0005239360",
                     "securityName": "Shares Unicredit",
                     "securityOpening": "",
@@ -132,7 +132,7 @@
             "securitiesData": [
                 {
                     "securityBalance": "",
-                    "securityBalanceCurrency": "",
+                    "securityBalanceCurrency": "0",
                     "securityId": "US123456789",
                     "securityName": "Shares Netflix",
                     "securityOpening": "",
@@ -171,7 +171,7 @@
             "securitiesData": [
                 {
                     "securityBalance": "",
-                    "securityBalanceCurrency": "",
+                    "securityBalanceCurrency": "0",
                     "securityId": "IT000792468",
                     "securityName": "Bonds Bnp Paribas",
                     "securityOpening": "",

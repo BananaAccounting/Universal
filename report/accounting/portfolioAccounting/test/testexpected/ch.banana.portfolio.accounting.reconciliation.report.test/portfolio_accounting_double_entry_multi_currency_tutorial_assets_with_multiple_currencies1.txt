@@ -1,0 +1,197 @@
+%%info_test_name{portfolio_accounting_double_entry_multi_currency_tutorial_assets_with_multiple_currencies1}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_multi\_currency\_tutorial\_assets\_with\_multiple\_currencies1.ac2}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – Private Equity, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{Planet - Planet }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 200.00  & 10  & 20.0000  & \multicolumn{2}{l}{} & 187.70 \\
+ & 01.02.2026  &  & Shares Planet Purchase  & 100  & 10.0000  & 1'000.00  &  & 1'200.00  & 110  & 10.9091  & 934.00  &  & 1'121.70 \\
+ & 20.03.2026  &  & Shares Planet Sale  & -60  & 12.0000  &  & 720.00  & 480.00  & 50  & 9.6000  &  & 669.60  & 452.10 \\
+ & 20.03.2026  &  & Planet Result on sale  & ±60  & 1.0909  & 65.45  &  & 545.45  & 50  & 10.9090  & 60.87  &  & 512.97 \\
+ & 20.03.2026  &  & Planet Result on exchange  &  &  &  &  & 545.45  & 50  & 10.9090  &  & 3.11  & 509.86 \\
+ & 31.12.2026  &  & Planet Assestamento al prezzo di mercato (22.0000)  & ±50  & 11.0910  & 554.55  &  & 1'100.00  & 50  & 22.0000  & 518.37  &  & 1'028.23 \\
+ & 31.12.2026  &  & Planet Assestamento al tasso di cambio alla data di valutazione  &  &  &  &  & 1'100.00  & 50  & 22.0000  &  & 0.83  & 1'027.40 \\
+ & \excltest{11.09.2026}  &  & Balance Planet  & \multicolumn{2}{l}{} & 1'620.00  & 720.00  & 1'100.00  & 50  & 22.0000  & 1'513.24  & 673.54  & 1'027.40 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{Sunjob - Sunjob }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Sunjob  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{Sun Press SA - Sun Press SA }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 100.00  & 5  & 20.0000  & \multicolumn{2}{l}{} & 100.00 \\
+ & 31.12.2026  &  & Sun Press SA Assestamento al prezzo di mercato (21.0000)  & ±5  & 1.0000  & 5.00  &  & 105.00  & 5  & 21.0000  & 5.00  &  & 105.00 \\
+ & \excltest{11.09.2026}  &  & Balance Sun Press SA  & \multicolumn{2}{l}{} & 5.00  & 0.00  & 105.00  & 5  & 21.0000  & 5.00  & 0.00  & 105.00 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{CHxxxxxxxxx - Swiss Global Services SA }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 2'500.00  & 25  & 100.0000  & \multicolumn{2}{l}{} & 2'500.00 \\
+ & 20.02.2026  &  & Shares Swiss Global Services SA Purchase  & 60  & 100.0000  & 6'000.00  &  & 8'500.00  & 85  & 100.0000  & 6'000.00  &  & 8'500.00 \\
+ & 20.03.2026  &  & Shares Swiss Global Services SA Sale  & -30  & 102.0000  &  & 3'060.00  & 5'440.00  & 55  & 98.9091  &  & 3'060.00  & 5'440.00 \\
+ & 20.03.2026  &  & Swiss Global Services SA Result on sale (Profit)  & ±30  & 2.0000  & 60.00  &  & 5'500.00  & 55  & 100.0000  & 60.00  &  & 5'500.00 \\
+ & 31.12.2026  &  & Swiss Global Services SA Assestamento al prezzo di mercato (102.0000)  & ±55  & 2.0000  & 110.00  &  & 5'610.00  & 55  & 102.0000  & 110.00  &  & 5'610.00 \\
+ & \excltest{11.09.2026}  &  & Balance CHxxxxxxxxx  & \multicolumn{2}{l}{} & 6'170.00  & 3'060.00  & 5'610.00  & 55  & 102.0000  & 6'170.00  & 3'060.00  & 5'610.00 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{Loan Home Partners SA - Loan Home Partners SA }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & 25.03.2026  &  & Bonds Loan Home Partners SA Purchase  & 5'000  & 0.9800  & 4'900.00  &  & 4'900.00  & 5'000  & 0.9800  & 4'900.00  &  & 4'900.00 \\
+ & 31.10.2026  &  & Bonds Loan Home Partners SA Sale  & -5'000  & 1.0300  &  & 5'150.00  & -250.00  & 0  &  &  & 5'150.00  & -250.00 \\
+ & 31.10.2026  &  & Loan Home Partners SA Result on sale (Profit)  & ±5'000  & 0.0500  & 250.00  &  & 0.00  & 0  &  & 250.00  &  & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Loan Home Partners SA  & \multicolumn{2}{l}{} & 5'150.00  & 5'150.00  & 0.00  & 0  & 0.0000  & 5'150.00  & 5'150.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{Firedrop - Firedrop USD }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Firedrop  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (CHF)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance Private Equity  & 2'787.70  & 2'787.70  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 2'787.70  & 2'787.70  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 4'015.00  & 3'954.70  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance Private Equity  & 6'742.40  & 6'742.40  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 6'742.40  & 6'742.40  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – Investments Others CHF, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{Immo Platz  AG - Immo Plaz  AG }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Immo Platz  AG  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{Lemaed SA - Lemaed SA }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Lemaed SA  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (CHF)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance Investments Others CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance Investments Others CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – Investments Others USD, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (USD)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance Investments Others USD  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  &  &  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance Investments Others USD  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  &  &  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – Fund Plus CB CHF, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{Fund Plus 1 - Fund Plus 1 }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Fund Plus 1  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (CHF)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance Fund Plus CB CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance Fund Plus CB CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – Fund Plus UBS CHF, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{Fund Plus 2 - Fund Plus 2 }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance Fund Plus 2  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (CHF)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance Fund Plus UBS CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance Fund Plus UBS CHF  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – UBS Securities USD, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{XX - XX Props S.A. 2024/26 }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 185.00  & 10  & 18.5000  & \multicolumn{2}{l}{} & 167.66 \\
+ & 22.02.2026  &  & XX Props S.A. 2024/26 Purchase  & 100  & 20.0000  & 2'000.00  &  & 2'185.00  & 110  & 19.8636  & 1'592.00  &  & 1'759.66 \\
+ & 22.03.2026  &  & XX Props S.A. 2024/26 Sale  & -50  & 19.5000  &  & 975.00  & 1'210.00  & 60  & 20.1667  &  & 780.00  & 979.66 \\
+ & 22.03.2026  &  & XX Props S.A. 2024/26 Result on sale  & ±50  & -0.3636  &  & 18.18  & 1'191.82  & 60  & 19.8637  &  & 14.54  & 965.12 \\
+ & 22.03.2026  &  & XX Props S.A. 2024/26 Result on exchange  &  &  &  &  & 1'191.82  & 60  & 19.8637  &  & 5.30  & 959.82 \\
+ & 31.12.2026  &  & XX Props S.A. 2024/26 Assestamento al prezzo di mercato (18.3000)  & ±60  & -1.5637  &  & 93.82  & 1'098.00  & 60  & 18.3000  &  & 75.56  & 884.26 \\
+ & 31.12.2026  &  & XX Props S.A. 2024/26 Assestamento al tasso di cambio alla data di valutazione  &  &  &  &  & 1'098.00  & 60  & 18.3000  &  & 10.25  & 874.01 \\
+ & \excltest{11.09.2026}  &  & Balance XX  & \multicolumn{2}{l}{} & 2'000.00  & 1'087.00  & 1'098.00  & 60  & 18.3000  & 1'592.00  & 885.65  & 874.01 \\
+\multicolumn{14}{l}{}\\
+\multicolumn{14}{l}{YYY - YYY NV }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 0.00  &  &  & \multicolumn{2}{l}{} & 0.00 \\
+ & \excltest{11.09.2026}  &  & Balance YYY  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (USD)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance UBS Securities USD  & 185.00  & 167.66  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 185.00  & 167.66  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 913.00  & 706.35  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance UBS Securities USD  & 1'098.00  & 874.01  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 1'098.00  & 874.01  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Account Reconciliation Report – UBS Securities CHF, Data as of: 11.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\multicolumn{14}{l}{ZZZ - UBS Deposit ZZZ }\\
+ & 01.01.2026  &  & Initial balance  & \multicolumn{4}{l}{} & 140.00  & 20  & 7.0000  & \multicolumn{2}{l}{} & 140.00 \\
+ & 24.02.2026  &  & UBS Deposit ZZZ Purchase  & 20  & 7.1000  & 142.00  &  & 282.00  & 40  & 7.0500  & 142.00  &  & 282.00 \\
+ & 25.03.2026  &  & UBS Deposit ZZZ  & -10  & 7.6000  &  & 76.00  & 206.00  & 30  & 6.8667  &  & 76.00  & 206.00 \\
+ & 25.03.2026  &  & UBS Deposit ZZZ Result on sale  & ±10  & 0.5500  & 5.50  &  & 211.50  & 30  & 7.0500  & 5.50  &  & 211.50 \\
+ & 31.12.2026  &  & UBS Deposit ZZZ Assestamento al prezzo di mercato (7.8000)  & ±30  & 0.7500  & 22.50  &  & 234.00  & 30  & 7.8000  & 22.50  &  & 234.00 \\
+ & \excltest{11.09.2026}  &  & Balance ZZZ  & \multicolumn{2}{l}{} & 170.00  & 76.00  & 234.00  & 30  & 7.8000  & 170.00  & 76.00  & 234.00 \\
+\multicolumn{14}{l}{}\\
+Reconciliation Summary  & \multicolumn{13}{l}{}\\
+ & Account Currency (CHF)  & Base Currency (CHF)  & \multicolumn{11}{l}{}\\
+Opening Balance UBS Securities CHF  & 140.00  & 140.00  & \multicolumn{11}{l}{}\\
+Opening Balance (Securities)  & 140.00  & 140.00  & \multicolumn{11}{l}{}\\
+Opening difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Total Securities movements  & 94.00  & 94.00  & \multicolumn{11}{l}{}\\
+\multicolumn{14}{l}{}\\
+Expected Current Balance UBS Securities CHF  & 234.00  & 234.00  & \multicolumn{11}{l}{}\\
+Actual Balance (Securities)  & 234.00  & 234.00  & \multicolumn{11}{l}{}\\
+Current difference (should be zero)  & 0.00  & 0.00  & \multicolumn{11}{l}{}\\
+\end{longtable}
+\end{reportvalue}
+\end{document}
