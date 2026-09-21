@@ -8,6 +8,7 @@
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
+// @permissions = allow-qml
 
 /**
  * Entry point registered in Banana. It opens the QML dashboard dialog.
@@ -59,6 +60,7 @@ function addDashboardReportTitle(report, dashboard) {
     table.addColumn("Title");
     let row = table.addRow();
     row.addCell("Portfolio dashboard - " + dashboard.asOfDate + " - " + dashboard.baseCurrency, "styleDashboardTitle");
+    row.excludeFromTest(); // Contains the current date.
 }
 
 /**

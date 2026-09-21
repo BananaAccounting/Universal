@@ -21,7 +21,7 @@
 \section{Test 1.}
 \begin{reportvalue}{Portfolio dashboard}
 \begin{longtable}[l]{ l }
-Portfolio dashboard - 12.06.2026 - CHF \\
+\excltest{Portfolio dashboard - 21.09.2026 - CHF} \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 Metric  & Value  & Metric  & Value \\
@@ -92,7 +92,7 @@ Average cost history - Loan Home Partners SA (Loan Home Partners SA) Date  & Ave
 \section{Test 2.}
 \begin{reportvalue}{Portfolio dashboard}
 \begin{longtable}[l]{ l }
-Portfolio dashboard - 12.06.2026 - CHF \\
+\excltest{Portfolio dashboard - 21.09.2026 - CHF} \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 Metric  & Value  & Metric  & Value \\
