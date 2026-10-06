@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-10-06
+
+* [RELEASE BETA] 
+
+* [Enhancement] New look for the Invoice/Estimate and Settings dialog.
+* [Enhancement] The dialog is responsive and adapts to the different sizes on desktop, smartphone and tablet.
+* [Enhancement] Added a **⋮** context menu on every row of the items table when the window is narrow.
+* [Enhancement] A banner marks read only documents.
+* [Enhancement] Added a scroll bar under the items table.
+* [Fix] In the dialog, fixed the texts shown when editing or creating an estimate.
+* [Fix] In the items table:
+  - Fixed the display of the column titles and of the rows when the window is resized.
+  - Fixed the Description cell not adapting when text is typed on several lines.
+  - Fixed data entry in the last row of the table, which in some cases cleared the content.  
+
 ## 2026-07-27
 * [RELEASE BETA] Fixed an error when using the console.log() function
 
