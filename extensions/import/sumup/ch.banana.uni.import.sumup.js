@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2026-04-07
+// @pubdate = 2026-11-11
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
@@ -887,6 +887,12 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
  * Letzte 4 Ziffern der Karte,Kartentyp,Zahlungsmethode,Eingabemodus,Autorisierungscode,
  * Beschreibung,Betrag,Gebührenbetrag,Auszahlungsbetrag,Auszahlungsdatum,Auszahlungs-ID
  *
+ * Stesso formato in italiano (stesse colonne, stesso ordine):
+ * Conto,Timestamp,Codice transazione,Tipo transazione,Stato,Riferimento,Circuito carta,
+ * Ultime 4 cifre carta,Finanziamento carta,Metodo di pagamento,Modalità di accesso,
+ * Codice di autorizzazione,Descrizione,Importo transazione,Importo commissione,
+ * Importo versamento,Data Pagamento,ID Pagamento
+ *
  * La logica di classificazione/mapping delle transazioni (payment, payout, refund, cash)
  * è identica al Format 2, quindi viene ereditata senza modifiche.
  */
@@ -902,6 +908,12 @@ var SumupFormat3 = class SumupFormat3 extends SumupFormat2 {
       let convertedColumns = [];
 
       convertedColumns = this.convertHeaderDe(columns);
+      if (convertedColumns.length > 0) {
+         loadForm(form, convertedColumns, rows);
+         return form;
+      }
+
+      convertedColumns = this.convertHeaderIt(columns);
       if (convertedColumns.length > 0) {
          loadForm(form, convertedColumns, rows);
          return form;
@@ -997,6 +1009,102 @@ var SumupFormat3 = class SumupFormat3 extends SumupFormat2 {
    }
 
    /**
+    * Converte l'header del nuovo formato IT (2026).
+    */
+   convertHeaderIt(columns) {
+      let convertedColumns = [];
+
+      for (var i = 0; i < columns.length; i++) {
+         switch (columns[i]) {
+               case "Conto":
+                  convertedColumns[i] = "Account";
+                  break;
+               case "Timestamp":
+                  convertedColumns[i] = "Transaction Date";
+                  break;
+               case "Codice transazione":
+                  convertedColumns[i] = "Transaction Id";
+                  break;
+               case "Tipo transazione":
+                  convertedColumns[i] = "Payment type";
+                  break;
+               case "Stato":
+                  convertedColumns[i] = "Status";
+                  break;
+               case "Riferimento":
+                  convertedColumns[i] = "Reference";
+                  break;
+               case "Circuito carta":
+                  convertedColumns[i] = "Card brand";
+                  break;
+               case "Ultime 4 cifre carta":
+                  convertedColumns[i] = "Last 4 digits";
+                  break;
+               case "Finanziamento carta":
+                  convertedColumns[i] = "Card type";
+                  break;
+               case "Metodo di pagamento":
+                  convertedColumns[i] = "Payment method";
+                  break;
+               case "Modalità di accesso":
+                  convertedColumns[i] = "Entry mode";
+                  break;
+               case "Codice di autorizzazione":
+                  convertedColumns[i] = "Authorization code";
+                  break;
+               case "Descrizione":
+                  convertedColumns[i] = "Description";
+                  break;
+               case "Importo transazione":
+                  convertedColumns[i] = "Amount incl. VAT";
+                  break;
+               case "Importo commissione":
+                  convertedColumns[i] = "Fee";
+                  break;
+               case "Importo versamento":
+                  convertedColumns[i] = "Payout";
+                  break;
+               case "Data Pagamento":
+                  convertedColumns[i] = "Payout date";
+                  break;
+               case "ID Pagamento":
+                  convertedColumns[i] = "Payout ID";
+                  break;
+               default:
+                  convertedColumns[i] = columns[i]; // Mantiene il valore originale se non è nella lista
+                  break;
+         }
+      }
+
+      if (convertedColumns.indexOf("Transaction Date") < 0
+         || convertedColumns.indexOf("Transaction Id") < 0
+         || convertedColumns.indexOf("Payment type") < 0
+         || convertedColumns.indexOf("Description") < 0
+         || convertedColumns.indexOf("Fee") < 0
+         || convertedColumns.indexOf("Reference") < 0) {
+         return [];
+      }
+
+      this.csvLanguage = "it";
+      return convertedColumns;
+   }
+
+   /**
+    * Sovrascrive getControlTerms di SumupFormat2
+    */
+   getControlTerms() {
+      switch (this.csvLanguage) {
+         case "de":
+            return this.getControlTermsDE();
+         case "it":
+            return this.getControlTermsIT();
+         default:
+            Banana.console.debug("*.csv headers language not recognized.");
+            return {};
+      }
+   }
+
+   /**
      * Sovrascrive getTransactionType per gestire il nuovo status "Geplant"
      * sulle righe di payout: vengono ignorate esplicitamente (non è ancora
      * stato accreditato nulla in banca) invece di finire nel generico "unknown".
@@ -1075,6 +1183,25 @@ var SumupFormat3 = class SumupFormat3 extends SumupFormat2 {
         terms.paymentMethodCash = "CASH";
         terms.paymentTypeTransaction = "Zahlung";
         terms.paymentTypePayout = "Auszahlung";
+        return terms;
+   }
+
+   /**
+   * Termini di controllo per il nuovo formato IT (2026).
+   */
+   getControlTermsIT() {
+        let terms = {};
+        terms.paymentStatusFailed = "Fallita";
+        terms.paymentStatusCanceled = "Annullata";
+        terms.paymentStatusSuccessful = "Riuscita";
+        terms.paymentStatusPaid = "Pagato";
+        terms.paymentStatusPending = "Pianificato";         // da confermare, non presente nel campione
+        terms.paymentMethodPos = "POS";
+        terms.paymentMethodCash = "CASH";                   // da confermare, non presente nel campione
+        terms.paymentMethodEcom = "ECOM";
+        terms.paymentTypeTransaction = "Pagamento";
+        terms.paymentTypePayout = "Versamento";
+        terms.paymentTypeRefunded = "Rimborso";             // da confermare, non presente nel campione
         return terms;
    }
 }

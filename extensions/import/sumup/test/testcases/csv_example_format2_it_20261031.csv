@@ -1,0 +1,3 @@
+Conto,Timestamp,Codice transazione,Tipo transazione,Stato,Riferimento,Circuito carta,Ultime 4 cifre carta,Finanziamento carta,Metodo di pagamento,Modalità di accesso,Codice di autorizzazione,Descrizione,Importo transazione,Importo commissione,Importo versamento,Data Pagamento,ID Pagamento
+amm@info.ch,2026-10-31 15:53:12,TAAA1111111,Pagamento,Riuscita,,MASTERCARD,1234,DEBIT,POS,CONTACTLESS,x1x1x1,Importo personalizzato,132.0,1.98,130.02,,
+,2026-10-31 15:53:36,TAAA1111111,Versamento,Pagato,,,,,,,,,132.0,1.98,130.02,2026-11-02,SUMUP PID1010102 PAYOUT 111110
