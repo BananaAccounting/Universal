@@ -83,7 +83,7 @@ var PrintReport = class PrintReport {
       return;
     }
     if (!recurringtransactions) {
-      console.debug("Tabella Registrazioni ricorrenti non aperta.");
+      Banana.console.debug("Tabella Registrazioni ricorrenti non aperta.");
       return;
     }
 
