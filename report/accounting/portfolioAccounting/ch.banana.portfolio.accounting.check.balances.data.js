@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-08-25
+// @pubdate = 2026-11-20
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
@@ -217,6 +217,7 @@ function getAccountsDataObjList(banDoc, docInfo) {
 function getSecuritiesDataObjList(banDoc, docInfo, account) {
   let securitiesList = [];
   let itemsTableData = getItemsTableData(banDoc);
+  const accCurrency = getAccountCurrency(account, banDoc);
 
   if (itemsTableData.length < 1) {
     let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
@@ -247,15 +248,29 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
       secBalance = itemCardData.currentValues.itemBalanceBase;
       secBalanceCurrency = itemCardData.currentValues.itemBalanceCurr;
 
+
       let secObj = {};
-      secObj.securityId = itemObj.item || "";
-      secObj.securityName = itemObj.description || "";
-      secObj.securityOpening = itemObj.valueBegin || "";
-      secObj.securityOpeningCurrency = itemObj.valueBeginCurrency || "";
-      secObj.securityBalance = secBalance || "";
-      secObj.securityBalanceCurrency = secBalanceCurrency || "";
-      secObj.securityTotalMovements = Banana.SDecimal.subtract(secBalance, itemObj.valueBegin) || "";
-      secObj.securityTotalMovementsCurrency = Banana.SDecimal.subtract(secBalanceCurrency, itemObj.valueBeginCurrency) || "";
+      secObj.securityId = itemCardData.itemId || "";
+      secObj.securityName = itemCardData.description || "";
+      if (itemCardData.itemCurrency == accCurrency) {
+        secObj.securityOpening = itemCardData.openingData.amount || "";
+        secObj.securityOpeningCurrency = itemCardData.openingData.amountItemCurr || "";
+        secObj.securityBalance = secBalance || "";
+        secObj.securityBalanceCurrency = secBalanceCurrency || "";
+        secObj.securityTotalMovements = Banana.SDecimal.subtract(secBalance, itemCardData.openingData.amount) || "";
+        secObj.securityTotalMovementsCurrency = Banana.SDecimal.subtract(secBalanceCurrency, itemCardData.openingData.amountItemCurr) || "";
+      } else {
+        /* Use only values in base currency*/
+        secObj.securityOpening = itemCardData.openingData.amount || "";
+        secObj.securityOpeningCurrency = secObj.securityOpening || "";
+        secObj.securityBalance = secBalance || "";
+        secObj.securityBalanceCurrency = secBalance || "";
+        secObj.securityTotalMovements = Banana.SDecimal.subtract(secBalance, itemCardData.openingData.amount) || "";
+        secObj.securityTotalMovementsCurrency = secObj.securityTotalMovements || "";
+      }
+
+      Banana.console.log(JSON.stringify(secObj));
+
       securitiesList.push(secObj);
     }
   });

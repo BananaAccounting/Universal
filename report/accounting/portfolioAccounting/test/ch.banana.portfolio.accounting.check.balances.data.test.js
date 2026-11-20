@@ -15,7 +15,7 @@
 
 // @id = ch.banana.portfolio.accounting.check.balances.data.test
 // @api = 1.0
-// @pubdate = 2025-02-11
+// @pubdate = 2026-11-20
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.portfolio.accounting.check.balances.data.test>
 // @task = app.command
@@ -42,6 +42,7 @@ TestCheckBalancesData.prototype.initTestCase = function () {
 
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2025.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2023.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_assets_with_multiple_currencies1.ac2");
 }
 
 // This method will be called at the end of the test case

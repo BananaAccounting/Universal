@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2026-03-05
+// @pubdate = 2026-11-20
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
@@ -525,7 +525,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
         setCurrentBalancesData(accData, accBalance, itemsTotalCurrentBalance);
 
         //Get total movements from the securities
-        let itemsTotalBalance = getItemsMovementsTotal(itemsDataList);
+        let itemsTotalBalance = getItemsMovementsTotal(itemsDataList, accCurrency);
         accData.securitiesMovementsBase = itemsTotalBalance.movTotalBase;
         accData.securitiesMovementsCurrency = itemsTotalBalance.movTotalCurrency;
 
@@ -624,10 +624,10 @@ function getItemsTotalInitialBalance(itemsDataList, accCurrency) {
     };
 }
 
-/** Calculate the difference between the opening anc current balance of each items and sum the value found for each item.
+/** Calculate the difference between the opening and current balance of each items and sum the value found for each item.
  * The returned value is the total movements amount calculated from the items.
 */
-function getItemsMovementsTotal(itemsDataList) {
+function getItemsMovementsTotal(itemsDataList, accCurrency) {
     let itemsTotalMovements = {};
     let itemTotalMov = "0";
     let itemTotalMovCurrency = "0";
@@ -638,8 +638,15 @@ function getItemsMovementsTotal(itemsDataList) {
         let itemCurrBalance = item.currentValues.itemBalanceBase;
         let itemCurrBalanceCurr = item.currentValues.itemBalanceCurr;
 
-        itemTotalMov = Banana.SDecimal.add(itemTotalMov, Banana.SDecimal.subtract(itemCurrBalance, itemOpBalance));
-        itemTotalMovCurrency = Banana.SDecimal.add(itemTotalMovCurrency, Banana.SDecimal.subtract(itemCurrBalanceCurr, itemOpBalanceCurr));
+        if (item.itemCurrency == accCurrency) {
+            itemTotalMov = Banana.SDecimal.add(itemTotalMov, Banana.SDecimal.subtract(itemCurrBalance, itemOpBalance));
+            itemTotalMovCurrency = Banana.SDecimal.add(itemTotalMovCurrency, Banana.SDecimal.subtract(itemCurrBalanceCurr, itemOpBalanceCurr));
+        } else {
+            /* We work just with the base amount*/
+            itemTotalMov = Banana.SDecimal.add(itemTotalMov, Banana.SDecimal.subtract(itemCurrBalance, itemOpBalance));
+            itemTotalMovCurrency = itemTotalMov;
+        }
+
     });
 
     itemsTotalMovements.movTotalBase = itemTotalMov;
