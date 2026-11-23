@@ -164,6 +164,19 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   var currentParam = {};
+  currentParam.name = 'param_show_long_description_messages';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_show_long_description_messages;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_show_long_description_messages ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.tooltip_param_show_long_description_messages;
+  currentParam.readValue = function() {
+    userParam.param_show_long_description_messages = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
   currentParam.name = 'param_quantity_decimals';
   currentParam.parentObject = 'param_print_technical_proposal';
   currentParam.title = texts.param_quantity_decimals;
@@ -258,6 +271,7 @@ function initUserParam() {
   userParam.param_print_header_address = false;
   userParam.param_regex_exclude_itemid_cell = '';
   userParam.param_max_description_lenght = '58';
+  userParam.param_show_long_description_messages = false;
   userParam.param_quantity_decimals = '2';
   userParam.param_print_carryforward = true;
   userParam.param_use_row_style = false;
@@ -682,6 +696,18 @@ function printReportTable(banDoc, report, userParam) {
       description = normalizeText(description);
     }
 
+    // Reports (in the Messages window) descriptions that exceed the max allowed length
+    if (userParam.param_show_long_description_messages && description.length > maxDescriptionLength) {
+      var msgLong = texts.longDescriptionWarning;
+      msgLong = msgLong.replace(/{ITEMID}/g, itemIdValue || formatItemId(itemIdValue));
+      msgLong = msgLong.replace(/{LENGTH}/g, description.length);
+      msgLong = msgLong.replace(/{MAX}/g, maxDescriptionLength);
+      msgLong = msgLong.replace(/{DESCRIPTION}/g, description);
+
+      Banana.application.showMessages(false);
+      quicksumRow.addMessage(msgLong);
+    }
+
     var descriptionLines = splitTextByLength(description, maxDescriptionLength);
     row.addCell(descriptionLines[0], rowClass + " description", 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     //Banana.console.log(descriptionLines[0] + " ==> " +  descriptionLines[0].length);
@@ -1081,12 +1107,24 @@ function formatItemId(str) {
   return cleanStr;
 }
 
-/** Function that splits the text by the defined max length */
+/** Function that splits the text by the defined max length, breaking on word
+ *  boundaries (spaces) whenever possible, so that words are never cut in half.
+ *  Only if a single word is longer than maxLen (no space available to break on)
+ *  it gets force-cut at maxLen, to avoid an infinite loop / unbreakable line. */
 function splitTextByLength(text, maxLen) {
   var result = [];
   while (text.length > maxLen) {
-    result.push(text.substring(0, maxLen));
-    text = text.substring(maxLen).replace(/^\s+/, ""); // removes all blanc spaces at the beginning of the new line
+
+    // Look for the last space at or before position maxLen (end of a whole word)
+    var cutIndex = text.lastIndexOf(" ", maxLen);
+
+    if (cutIndex <= 0) {
+      // No usable space found (single word longer than maxLen): force cut
+      cutIndex = maxLen;
+    }
+
+    result.push(text.substring(0, cutIndex).replace(/\s+$/, "")); // removes blank spaces at the end of the piece
+    text = text.substring(cutIndex).replace(/^\s+/, ""); // removes blank spaces at the beginning of the new line
   }
   result.push(text); //last piece of text
   return result;
@@ -1373,6 +1411,7 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Zusammenfassung"; 
     texts.amount = "Betrag";
     texts.suspiciousCharactersWarning = "Achtung: Die Beschreibung '{DESCRIPTION}' enthält verdächtige Zeichen '{CHARACTER}'.";
+    texts.longDescriptionWarning = "Achtung: Die Beschreibung der Position {ITEMID} ist {LENGTH} Zeichen lang und überschreitet damit das Maximum von {MAX} Zeichen ('{DESCRIPTION}').";
 
     texts.param_print_technical_proposal = "Technisches Angebot drucken";
     texts.param_print_summary = "Zusammenfassung drucken";
@@ -1382,6 +1421,7 @@ function loadTexts(banDoc,lang) {
     texts.param_print_header_address = "Adresse in der Kopfzeile anzeigen";    
     texts.param_regex_exclude_itemid_cell = "ItemId ausschließen (Regex)";
     texts.param_max_description_lenght = "Maximale Beschreibungslänge pro Zeile";
+    texts.param_show_long_description_messages = "Zu lange Beschreibungen in den Meldungen anzeigen";
     texts.param_quantity_decimals = "Dezimalstellen in der Spalte Menge";
     texts.param_print_carryforward = "Kumulierte Summe auf den Seiten anzeigen";
     texts.param_report = "Berichts";
@@ -1398,6 +1438,7 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_print_header_address = "Schließt die Adresse in der Kopfzeile des Dokuments ein";    
     texts.tooltip_param_regex_exclude_itemid_cell = "Definiert eine Regel (Regex), um bestimmte Werte aus der Spalte ItemId auszuschließen";
     texts.tooltip_param_max_description_lenght = "Maximale Anzahl von Zeichen pro Beschreibungszeile";
+    texts.tooltip_param_show_long_description_messages = "Zeigt in der Meldungsfenster alle Zeilen an, deren Beschreibung die maximale Länge überschreitet";
     texts.tooltip_param_quantity_decimals = "Anzahl der in der Spalte „Menge“ angezeigten Dezimalstellen";
     texts.tooltip_param_print_carryforward = "Schließt die kumulierte Gesamtsumme am Seitenende und am Anfang der nächsten Seite ein";
     texts.tooltip_param_summary_print_other_positions = "Geben Sie die Artikel-IDs ein, die in die Zusammenfassung aufgenommen werden sollen, getrennt durch ; (z. B. 123;abc;Z012)";
@@ -1417,6 +1458,7 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Récapitulation"; 
     texts.amount = "Montant";
     texts.suspiciousCharactersWarning = "Attention : la description '{DESCRIPTION}' contient des caractères suspects '{CHARACTER}'.";
+    texts.longDescriptionWarning = "Attention : la description de la position {ITEMID} compte {LENGTH} caractères et dépasse le maximum autorisé de {MAX} caractères ('{DESCRIPTION}').";
 
     texts.param_print_technical_proposal = "Imprimer l’offre technique";
     texts.param_print_summary = "Imprimer le récapitulatif";
@@ -1426,6 +1468,7 @@ function loadTexts(banDoc,lang) {
     texts.param_print_header_address = "Afficher l’adresse d’en-tête";
     texts.param_regex_exclude_itemid_cell = "Exclure ItemId (regex)";
     texts.param_max_description_lenght = "Longueur maximale de la description par ligne";
+    texts.param_show_long_description_messages = "Signaler les descriptions trop longues dans les messages";
     texts.param_quantity_decimals = "Décimales colonne Quantité";
     texts.param_print_carryforward = "Afficher le total cumulatif sur les pages";
     texts.param_report = "Rapport";
@@ -1442,6 +1485,7 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_print_header_address = "Inclut l’adresse dans l’en-tête du document";    
     texts.tooltip_param_regex_exclude_itemid_cell = "Définit une règle (regex) pour exclure certaines valeurs de la colonne ItemId";
     texts.tooltip_param_max_description_lenght = "Nombre maximal de caractères par ligne de description";
+    texts.tooltip_param_show_long_description_messages = "Affiche dans la fenêtre des messages toutes les lignes dont la description dépasse la longueur maximale";
     texts.tooltip_param_quantity_decimals = "Nombre de décimales affichées dans la colonne Quantité";
     texts.tooltip_param_print_carryforward = "Inclut le total cumulé en fin de page et au début de la page suivante";
     texts.tooltip_param_summary_print_other_positions = "Saisissez les identifiants des articles à inclure dans le récapitulatif, séparés par ; (ex. 123;abc;Z012)";
@@ -1461,6 +1505,7 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Riepilogo"; 
     texts.amount = "Importo";
     texts.suspiciousCharactersWarning = "Attenzione: la descrizione '{DESCRIPTION}' contiene caratteri sospetti '{CHARACTER}'.";
+    texts.longDescriptionWarning = "Attenzione: la descrizione della posizione {ITEMID} è lunga {LENGTH} caratteri e supera il massimo consentito di {MAX} caratteri ('{DESCRIPTION}').";
 
     texts.param_print_technical_proposal = "Stampa capitolato d'offerta";
     texts.param_print_summary = "Stampa riepilogo";
@@ -1470,6 +1515,7 @@ function loadTexts(banDoc,lang) {
     texts.param_print_header_address = "Mostra Indirizzo intestazione";
     texts.param_regex_exclude_itemid_cell = "Escludi ItemId (regex)";
     texts.param_max_description_lenght = "Lunghezza massima descrizione per riga";
+    texts.param_show_long_description_messages = "Segnala nei messaggi le descrizioni troppo lunghe";
     texts.param_quantity_decimals = "Decimali colonna Quantità";
     texts.param_print_carryforward = "Mostra totale cumulativo sulle pagine";
     texts.param_report = "Report";
@@ -1486,6 +1532,7 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_print_header_address = "Include l’indirizzo nell’intestazione del documento";    
     texts.tooltip_param_regex_exclude_itemid_cell = "Definisce una regola (regex) per non stampare alcuni valori della colonna ItemId";
     texts.tooltip_param_max_description_lenght = "Numero massimo di caratteri per ogni riga di descrizione";
+    texts.tooltip_param_show_long_description_messages = "Mostra nella finestra dei messaggi tutte le righe la cui descrizione supera la lunghezza massima consentita";
     texts.tooltip_param_quantity_decimals = "Numero di decimali visualizzati nella colonna Quantità";
     texts.tooltip_param_print_carryforward = "Include il totale cumulato a fine pagina e all’inizio della successiva";
     texts.tooltip_param_summary_print_other_positions = "Inserisci ID di articoli da includere nel riepilogo, separati da ; (es. 123;abc;Z012)";
@@ -1505,6 +1552,7 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Summary";
     texts.amount = "Amount";
     texts.suspiciousCharactersWarning = "Warning: the description '{DESCRIPTION}' contains suspicious characters '{CHARACTER}'.";
+    texts.longDescriptionWarning = "Warning: the description of item {ITEMID} is {LENGTH} characters long and exceeds the maximum allowed of {MAX} characters ('{DESCRIPTION}').";
 
     texts.param_print_technical_proposal = "Print technical proposal";
     texts.param_print_summary = "Print summary";
@@ -1514,6 +1562,7 @@ function loadTexts(banDoc,lang) {
     texts.param_print_header_address = "Show header address";
     texts.param_regex_exclude_itemid_cell = "Exclude ItemId (regex)";
     texts.param_max_description_lenght = "Maximum description length per line";
+    texts.param_show_long_description_messages = "Report too long descriptions in messages";
     texts.param_quantity_decimals = "Decimals Quantity column";
     texts.param_print_carryforward = "Show cumulative total on pages";
     texts.param_report = "Report";
@@ -1530,6 +1579,7 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_print_header_address = "Includes the address in the document header";    
     texts.tooltip_param_regex_exclude_itemid_cell = "Defines a rule (regex) to exclude certain values from the ItemId column";
     texts.tooltip_param_max_description_lenght = "Maximum number of characters per description line";
+    texts.tooltip_param_show_long_description_messages = "Shows in the Messages window all the rows whose description exceeds the maximum allowed length";
     texts.tooltip_param_quantity_decimals = "Number of decimal places displayed in the Quantity column";
     texts.tooltip_param_print_carryforward = "Includes the cumulative total at the end of the page and at the beginning of the next one";
     texts.tooltip_param_summary_print_other_positions = "Enter item IDs to include in the summary, separated by ; (e.g. 123;abc;Z012)";
